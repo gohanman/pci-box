@@ -1,0 +1,104 @@
+#!/bin/sh
+#
+# gsad    This starts and stops the Greenbone Security Assistant.
+#
+# chkconfig:   35 75 25
+# description: This starts and stops the Greenbone Security Assistant.
+# processname: /usr/sbin/gsad
+# config:      /etc/openvas/gsad.conf
+# pidfile:     /var/run/gsad.pid
+#
+### BEGIN INIT INFO
+# Provides: $greenbone-security-assistant
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+EXEC="/usr/local/sbin/gsad"
+PROG=$(basename $EXEC)
+
+# Check for missing binaries (stale symlinks should not happen)
+# Note: Special treatment of stop for LSB conformance
+test -x $EXEC || { echo "$EXEC not installed"; 
+	if [ "$1" = "stop" ]; then exit 0;
+	else exit 5; fi; }
+
+# Check for existence of needed config file
+GSAD_CONFIG=/etc/sysconfig/gsad
+test -r $GSAD_CONFIG || { echo "$GSAD_CONFIG not existing";
+	if [ "$1" = "stop" ]; then exit 0;
+	else exit 6; fi; }
+
+# Read config	
+. $GSAD_CONFIG
+
+# Build parameters
+[ "$GSA_ADDRESS" ] && PARAMS="--listen=$GSA_ADDRESS"
+[ "$GSA_PORT" ] && PARAMS="$PARAMS --port=$GSA_PORT"
+[ "$GSA_SSL_PRIVATE_KEY" ] && PARAMS="$PARAMS --ssl-private-key=$GSA_SSL_PRIVATE_KEY"
+[ "$GSA_SSL_CERTIFICATE" ] && PARAMS="$PARAMS --ssl-certificate=$GSA_SSL_CERTIFICATE"
+[ "$GSA_REDIRECT" ] && [ "$GSA_REDIRECT" == 1 ] && PARAMS="$PARAMS --redirect"
+[ "$GSA_REDIRECT_PORT" ] && PARAMS="$PARAMS --rport=$GSA_REDIRECT_PORT"
+[ "$MANAGER_ADDRESS" ] && PARAMS="$PARAMS --mlisten=$MANAGER_ADDRESS"
+[ "$MANAGER_PORT" ] && PARAMS="$PARAMS --mport=$MANAGER_PORT"
+
+LOCKFILE=/var/lock/subsys/$PROG
+
+start() {
+    echo -n $"Starting greenbone-security-assistant: "
+    daemon $EXEC $PARAMS
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $LOCKFILE
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping greenbone-security-assistant: "
+    killproc $PROG
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $LOCKFILE
+    return $RETVAL
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    echo -n $"Reloading greenbone-security-assistant: "
+    killproc $PROG -HUP
+    RETVAL=$?
+    echo
+    return $RETVAL
+}
+
+force_reload() {
+    restart
+}
+
+fdr_status() {
+    status $PROG
+}
+
+case "$1" in
+    start|stop|restart|reload)
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        fdr_status
+        ;;
+    condrestart|try-restart)
+        [ ! -f $LOCKFILE ] || restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|try-restart|reload|force-reload}"
+        exit 2
+esac
+
