@@ -38,7 +38,7 @@ Show all network ports that are listening (-l) via TCP (-t). Display the numeric
 * How does OpenVAS help with PCI compliance?
   * OpenVAS can fulfill requirements related to internal vulnerability scans nicely. It's low cost, user friendly, and can be resident in the card data environment without introducing any external access.
   * OpenVAS can scan networks and verify no unexpected devices have been connected.
-* What the downsides of OpenVAS?
+* What are the downsides of OpenVAS?
   * It's kind of a pain to install. Hence the guide.
 
 ## Installing OpenVAS
