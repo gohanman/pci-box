@@ -8,10 +8,10 @@ The PCI Box is assumed to be running Linux. I will be using CentOS
 is assumed to be able to work out the differences on their own.
 
 Example PCI Box specs:
-ASUS J1900I-C Quad Core Celeron Mobo/CPU/VGA ITX combo
-8GB (2x4GB) DDR3 1333
-120GB SATA SSD
-Habey EMC-800B Case with power supply
+* ASUS J1900I-C Quad Core Celeron Mobo/CPU/VGA ITX combo
+* 8GB (2x4GB) DDR3 1333
+* 120GB SATA SSD
+* Habey EMC-800B Case with power supply
 
 Cost of the PCI Box is approximately $250 US. An x86_64 CPU is
 nice to have as occasionally 32-bit binaries are no longer 
