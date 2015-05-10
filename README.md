@@ -18,6 +18,20 @@ nice to have as occasionally 32-bit binaries are no longer
 available. Other choices can be summarized as "Eh, why not? It's
 doesn't cost much."
 
+# Pre-Reqs
+I'll reference a couple diagnostics repeatedly. Linux veterans feel free to skip ahead.
+## Is the process actually running?
+```
+$ ps -Af | grep <program name>
+```
+Where ```<program name>``` is the name of the program. Besides being a quick verfication that the program hasn't died, sometimes the arguments in the output help verify the program is running with the expected configuration.
+
+## Is the network port open?
+```
+$ netstat -nltp
+```
+Show all network ports that are listening (-l) via TCP (-t). Display the numeric port rather than a procotol name (-n) and display the name of the process rather than its ID (-p). The -p option only works as root. Note that this command does not give any information about firewall rules; it merely lists what is listening inside the firewall.
+
 # OpenVAS
 * What is OpenVAS?
   * OpenVAS is a vulnerability scanner stemming from the now commercial, previously open source Nessus.
