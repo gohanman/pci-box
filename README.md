@@ -60,7 +60,7 @@ $ cmake ..
 $ make
 $ make install
 ```
-With defaults, this will install to /usr/local. After the first installation, libraries, you may need to update PKG_CONFIG_PATH:
+With defaults, this will install to /usr/local. After the first installation, libraries, you probably need to update PKG_CONFIG_PATH:
 ```
 $ export PKG_CONFIG_PATH=/usr/local/lib64/pkg_config:$PKG_CONFIG_PATH
 ```
