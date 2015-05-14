@@ -85,3 +85,14 @@ Continue running openvas-check-setup and following its directions until it runs 
 We'll set up a couple common scans. First we need some targets. Go to Configuration => Targets and click the blue star icon to create a new target. The "Hosts" field can be a name, an IP address, or a range (e.g., 192.168.0.0/24). Ranges are useful for discovery scans. I use individual name/IP targets for actual vulnerability scans so I have more control over exactly when each host is scanned.
 
 Next we'll set up scans. Go to Scan Management => Tasks and again click the blue star icon to create a new task. The important options here are Scan Config and Scan Targets. Config specifies what time of scan is performed and Targets specifies which host(s) are scanned. I use Discovery to scan the network for unexpected hosts and Full and Fast for vulnterability scans on individual hosts. Lowering the intensity settings may be helpful if you're scanning during business hours. Use the green arrow icon to start a scan task immediately or use Configuration => Schedule to set up recurring schedules that can then be assigned to a task.
+
+# OSSEC
+* What is OSSEC?
+  * OSSEC is host based intrusion detection system (IDS) with centralized management and reporting.
+* How can OSSEC help with PCI compliance?
+  * OSSEC provides file integrity monitoring and alerting on most common OSes.
+
+## Installing OSSEC
+Download the latest version of [OSSEC](http://www.ossec.net/?page_id=19). The stable version is recommended. Install MySQL or Postgres as well as your database of choice's development package (e.g., mysql-devel or mysql-dev) and a C compiler. Unpack the tarball and run the install.sh script. Choose a "server" installation which will interact with OSSEC agents on other machines.
+
+OSSEC should now be installed in /var/ossec. Use the provided init script to start the service. You'll likely receive an email notification shortly there after.
