@@ -60,7 +60,24 @@ $ cmake ..
 $ make
 $ make install
 ```
+Each subpackage contains an INSTALL file with information about build requirements. The cmake step will list information about any missing dependencies. I was able to install everything I needed via yum.
+
 With defaults, this will install to /usr/local. After the first installation, libraries, you probably need to update PKG_CONFIG_PATH:
 ```
 $ export PKG_CONFIG_PATH=/usr/local/lib64/pkg_config:$PKG_CONFIG_PATH
 ```
+
+After installing, download the openvas-check-setup script which helpfully examines the system for problems and suggests solutions.
+```
+# wget "https://svn.wald.intevation.org/svn/openvas/trunk/tools/openvas-check-setup"
+# chmod +x openvas-check-setup
+# cp openvas-check-setup /usr/local/sbin
+# openvas-check-setup --v7
+```
+You will need to get three services configured and running:
+* The scanner service, openvassd, performs actual vulnerability scans. It listens on port 9391. The included init script does work even though systemd throws an error. Start up takes a while to load all the threat info but progress is shown in the process list.
+* The manager service, openvasmd, starts/stops/schedules scans. It listens on port 9390. The included init script works fine in this case.
+* The Greenbone Security Assistant, gsad, is a web-based interface to interact with the low level services using a GUI. It listens on port 9392. Like openvassd, systemd has some weird problem with the init script but does start the service.
+
+Continue running openvas-check-setup and following its directions until it runs without any errors. Now point a browser at port 9392 (note: HTTPS) to access the scanner interface. Login with the user account you created during the openvas-check-setup process. You should see something like this:
+[GSA Home Page](images/gsa.png)
