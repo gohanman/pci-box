@@ -96,3 +96,8 @@ Next we'll set up scans. Go to Scan Management => Tasks and again click the blue
 Download the latest version of [OSSEC](http://www.ossec.net/?page_id=19). The stable version is recommended. Install MySQL or Postgres as well as your database of choice's development package (e.g., mysql-devel or mysql-dev) and a C compiler. Unpack the tarball and run the install.sh script. Choose a "server" installation which will interact with OSSEC agents on other machines.
 
 OSSEC should now be installed in /var/ossec. Use the provided init script to start the service. You'll likely receive an email notification shortly there after.
+
+## Installing OSSEC Agents
+First run /var/ossec/bin/manage_agents on the OSSEC server. Create one or more agents and extract their keys. Keys are used to secure communication between the agents and the server. You will need a copy of each agent machine's key when installing and configuring the OSSEC agent. Restarting the OSSEC service on the server probably doesn't hurt at this point.
+
+On a Linux client, download the same tarball and run the same install.sh but this time pick "agent" instead of server. After OSSEC finishes installing, run /var/ossec/bin/manage_agents and import the agent's key. Start the OSSEC service on the client machine and it should connect up with the server. You'll probably get another notification. If there are connectivity issues, run /var/ossec/bin/agent_control -l on the server to see different agents' status. Make sure UDP port 1514 is open on the server.
