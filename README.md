@@ -80,4 +80,8 @@ You will need to get three services configured and running:
 * The Greenbone Security Assistant, gsad, is a web-based interface to interact with the low level services using a GUI. It listens on port 9392. Like openvassd, systemd has some weird problem with the init script but does start the service.
 
 Continue running openvas-check-setup and following its directions until it runs without any errors. Now point a browser at port 9392 (note: HTTPS) to access the scanner interface. Login with the user account you created during the openvas-check-setup process. You should see something like this:
-[GSA Home Page](images/gsa.png)
+![gsa](https://cloud.githubusercontent.com/assets/426966/7637286/74371770-fa32-11e4-81ae-53a928b6ec5e.png)
+
+We'll set up a couple common scans. First we need some targets. Go to Configuration => Targets and click the blue star icon to create a new target. The "Hosts" field can be a name, an IP address, or a range (e.g., 192.168.0.0/24). Ranges are useful for discovery scans. I use individual name/IP targets for actual vulnerability scans so I have more control over exactly when each host is scanned.
+
+Next we'll set up scans. Go to Scan Management => Tasks and again click the blue star icon to create a new task. The important options here are Scan Config and Scan Targets. Config specifies what time of scan is performed and Targets specifies which host(s) are scanned. I use Discovery to scan the network for unexpected hosts and Full and Fast for vulnterability scans on individual hosts. Lowering the intensity settings may be helpful if you're scanning during business hours. Use the green arrow icon to start a scan task immediately or use Configuration => Schedule to set up recurring schedules that can then be assigned to a task.
